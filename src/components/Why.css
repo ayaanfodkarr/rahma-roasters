@@ -1,0 +1,83 @@
+/* the section is pinned while the perks reveal, so it must fit the viewport */
+.why.section {
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-block: clamp(1.5rem, 4vh, 3rem);
+}
+.why .section__inner { width: 100%; }
+.why__head { text-align: center; max-width: 28ch; margin: 0 auto clamp(1rem, 3vh, 2rem); }
+.why__title { font-size: clamp(1.5rem, 3vw, 2.4rem); color: var(--cream); margin-top: 0.6rem; }
+
+/* perks flank a centred cup, like the reference "About" layout:
+   p1 p2 on top, p3 p4 below, the cup spanning both rows in the middle */
+.why__stage {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-areas:
+    "p1 cup p2"
+    "p3 cup p4";
+  gap: clamp(3rem, 7vw, 5rem) clamp(1.5rem, 4vw, 3.5rem);
+  align-items: center;
+  min-height: 50vh;
+}
+.perk--p1 { grid-area: p1; }
+.perk--p2 { grid-area: p2; }
+.perk--p3 { grid-area: p3; }
+.perk--p4 { grid-area: p4; }
+.why__cup { grid-area: cup; }
+.perk--p1, .perk--p3 { text-align: right; }  /* left-hand column */
+
+/* perks reveal one-by-one (driven by the ScrollTrigger in Why.jsx) */
+.perk {
+  opacity: 0;
+  transform: translateY(34px);
+  transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
+  will-change: opacity, transform;
+}
+.perk.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .perk { opacity: 1; transform: none; transition: none; } }
+
+.perk__n {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  color: var(--caramel);
+  opacity: 0.55;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.perk__title { font-family: var(--font-display); font-size: clamp(1.1rem, 1.7vw, 1.35rem); color: var(--cream); margin-bottom: 0.55rem; }
+.perk__body { font-size: 0.9rem; color: var(--cream-dim); }
+
+/* centre cup stage */
+.why__cup { position: relative; display: grid; place-items: center; }
+.why__dock { width: var(--cup-w); height: var(--cup-w); }
+.why__cupimg {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--cup-w);
+  z-index: 1;
+  filter: drop-shadow(0 40px 55px rgba(0, 0, 0, 0.55));
+}
+.why__disc {
+  position: absolute;
+  width: min(460px, 36vw); aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 168, 95, 0.18), transparent 62%);
+}
+
+@media (max-width: 900px) {
+  /* no pin on mobile, so drop the viewport-height / flex-centre sizing */
+  .why.section { min-height: auto; display: block; }
+  /* single column, cup first, then perks in numeric order 01 → 02 → 03 → 04 */
+  .why__stage {
+    grid-template-columns: 1fr;
+    grid-template-areas: "cup" "p1" "p2" "p3" "p4";
+    min-height: auto;
+    gap: 2.5rem;
+  }
+  .perk { text-align: center; }
+  .perk--p1, .perk--p3 { text-align: center; }
+}

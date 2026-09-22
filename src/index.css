@@ -1,0 +1,126 @@
+/* ============================================================
+   Rahma Roasters — dark coffee design system
+   ============================================================ */
+:root {
+  /* palette — deep coffee browns + cream + gold */
+  --bg:        #140D08;  /* darkest espresso ground */
+  --bg-2:      #1E140C;  /* raised panels */
+  --bg-3:      #2A1C12;  /* cards */
+  --coffee:    #3A2718;  /* mid coffee */
+  --cream:     #F1E7D6;  /* primary text */
+  --cream-dim: #C9BBA6;  /* muted text */
+  --caramel:   #C08A4E;  /* primary accent */
+  --gold:      #D4A85F;  /* highlight / gold spoon */
+  --matcha:    #8AA05A;  /* matcha accent */
+  --line:      rgba(241, 231, 214, 0.12);
+
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-brand:   'Cinzel', 'Playfair Display', serif;
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --page-x: clamp(1.25rem, 5vw, 6rem);
+  --maxw: 1280px;
+
+  /* one shared cup render size — used identically in the Why centre, the
+     travelling cup, and the hand, so the cup never appears to resize.
+     Tracks ~85% of the hand's width for a snug grip (see the mobile override). */
+  --cup-w: clamp(255px, 29vw, 374px);
+  color-scheme: dark;
+}
+/* the hand is sized differently on phones — keep the cup at ~85% of it there too */
+@media (max-width: 900px) {
+  :root { --cup-w: min(66vw, 289px); }
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--cream);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background: var(--bg);
+}
+/* coffee-bean ground on ONE fixed, composited layer (no background-attachment
+   on the scrolling body → no scroll jank on mobile): dark wash over a warm
+   glow over a faint bean texture. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(20, 13, 8, 0.955), rgba(20, 13, 8, 0.975)),
+    radial-gradient(120% 80% at 50% -10%, rgba(192, 138, 78, 0.12), transparent 60%),
+    url('/images/bean-spoon.png');
+  background-size: cover, cover, 900px;
+  background-position: center, center, center;
+  background-repeat: no-repeat, no-repeat, repeat;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+canvas { display: block; }
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* ---------- shared helpers ---------- */
+.eyebrow {
+  font-size: clamp(0.68rem, 1vw, 0.78rem);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--gold);
+}
+.display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+.section {
+  position: relative;
+  padding-block: clamp(5rem, 12vh, 9rem);
+  padding-inline: var(--page-x);
+}
+.section__inner { max-width: var(--maxw); margin-inline: auto; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.9em 1.9em;
+  border-radius: 100px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+  transition: transform .3s cubic-bezier(.2,.7,.2,1), background .3s, color .3s, border-color .3s;
+  will-change: transform;
+}
+.btn--solid { background: var(--caramel); color: #1a0f06; }
+.btn--solid:hover { transform: translateY(-2px); background: var(--gold); }
+.btn--ghost { background: transparent; color: var(--cream); border-color: var(--line); }
+.btn--ghost:hover { transform: translateY(-2px); border-color: var(--gold); color: var(--gold); }
+
+/* reveal-on-scroll */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(38px);
+  transition: opacity 1s cubic-bezier(.16,1,.3,1), transform 1s cubic-bezier(.16,1,.3,1);
+  will-change: opacity, transform;
+}
+[data-reveal].is-in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1 !important; transform: none !important; transition: none; }
+  * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; }
+}

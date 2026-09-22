@@ -1,0 +1,18 @@
+.showcup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 360px;
+  z-index: 30;
+  pointer-events: none;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  filter: drop-shadow(0 40px 55px rgba(0, 0, 0, 0.55));
+}
+.showcup__img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 900px) { .showcup { width: 240px; } }
