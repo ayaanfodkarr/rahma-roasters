@@ -56,7 +56,7 @@ body::before {
   background:
     linear-gradient(rgba(20, 13, 8, 0.955), rgba(20, 13, 8, 0.975)),
     radial-gradient(120% 80% at 50% -10%, rgba(192, 138, 78, 0.12), transparent 60%),
-    url('/images/bean-spoon.png');
+    var(--bean-url, none);
   background-size: cover, cover, 900px;
   background-position: center, center, center;
   background-repeat: no-repeat, no-repeat, repeat;

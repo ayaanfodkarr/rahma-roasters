@@ -1,5 +1,6 @@
 // Central asset map + placeholder content (swap freely later).
-const IMG = '/images/'
+// BASE_URL keeps these working under the GitHub Pages sub path as well as locally.
+const IMG = import.meta.env.BASE_URL + 'images/'
 
 export const assets = {
   heroSplash:  IMG + 'hero-splash.png',
